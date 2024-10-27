@@ -50,7 +50,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write # This is required for requesting the JWT
+      id-token: write #This is required for requesting the JWT
 
     steps:
       - name: Download artifact from build job
@@ -61,12 +61,13 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
+      
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: 7b59a2d6-aa5e-4fd3-98ae-e4bbe1b9bb7f
-          tenant-id: 0634972e-3835-44fc-9712-02a7be80771e
-          subscription-id: 001d3e31-6242-49d2-a530-4be1d0648e52
+          client-id: ${{ secrets.__clientidsecretname__ }}
+          tenant-id: ${{ secrets.__tenantidsecretname__ }}
+          subscription-id: ${{ secrets.__subscriptionidsecretname__ }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
@@ -74,3 +75,4 @@ jobs:
         with:
           app-name: 'Uberwager1'
           slot-name: 'Production'
+          
