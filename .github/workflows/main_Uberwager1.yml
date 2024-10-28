@@ -22,15 +22,21 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+          pip install -r requirements.txt
         
       - name: Run Tests
-        run: pytest  # Optional: Customize as needed
+        run: |
+          source venv/bin/activate
+          pytest
+        # Optional: Customize the test command as needed
+
+      - name: Install zip if not present
+        run: sudo apt-get install -y zip
 
       - name: Zip artifact for deployment
-        run: zip -r release.zip . -x 'venv/*' '.git/*' '.github/*'
+        run: |
+          source venv/bin/activate
+          zip -r release.zip . -x 'venv/*' '.git/*' '.github/*'
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
